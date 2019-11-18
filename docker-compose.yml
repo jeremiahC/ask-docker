@@ -15,6 +15,14 @@ services:
     - mysql
     volumes:
       - .:/var/www/html
+  cron:
+    build: ./docker/cron
+    volumes:
+     - .:/var/www/html
+    links:
+      - mysql
+    depends_on:
+      - app
   mysql:
     image: mysql:5.7
     environment:

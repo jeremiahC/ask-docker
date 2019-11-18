@@ -9,12 +9,22 @@ RUN apt-get update \
 git \
 zip \
 unzip \
-vim
+vim \
+libzip-dev \
+zlib1g-dev
 
 # install php extention
 RUN apt-get update \
     && apt-get install -y libpq-dev \
-    && docker-php-ext-install pdo_mysql pdo_pgsql
+    && docker-php-ext-install pdo_mysql pdo_pgsql \
+    && docker-php-ext-install zip
+
+RUN echo "file_uploads = On\n" \
+         "memory_limit = 500M\n" \
+         "upload_max_filesize = 500M\n" \
+         "post_max_size = 500M\n" \
+         "max_execution_time = 600\n" \
+         > /usr/local/etc/php/conf.d/uploads.ini
 
 # install nodejs and npm
 RUN apt-get update || apt-get update
