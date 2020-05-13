@@ -11,7 +11,8 @@ zip \
 unzip \
 vim \
 libzip-dev \
-zlib1g-dev
+zlib1g-dev \
+cron
 
 # install php extention
 RUN apt-get update \
@@ -33,3 +34,11 @@ RUN apt-get install -y nodejs \
 && apt-get install npm
 
 WORKDIR /var/www/html
+
+# Add files
+ADD run.sh /run.sh
+ADD entrypoint.sh /entrypoint.sh
+
+RUN chmod +x /run.sh /entrypoint.sh
+
+ENTRYPOINT /entrypoint.sh

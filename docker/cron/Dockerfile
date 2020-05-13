@@ -1,4 +1,4 @@
-FROM php:7.1-fpm
+FROM php:7.2.19-fpm
 
 WORKDIR /var/www/html
 
@@ -6,13 +6,10 @@ RUN apt-get update
 RUN apt-get install -y \
         cron
 
-# Create the log file
-RUN touch /var/log/schedule.log
-RUN chmod 0777 /var/log/schedule.log
+# Add files
+ADD run.sh /run.sh
+ADD entrypoint.sh /entrypoint.sh
+ 
+RUN chmod +x /run.sh /entrypoint.sh
 
-# Add crontab file in the cron directory
-ADD scheduler /etc/cron.d/scheduler
-
-# Run the cron
-RUN crontab /etc/cron.d/scheduler
-CMD ["cron", "-f"]
+ENTRYPOINT /entrypoint.sh
